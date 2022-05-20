@@ -27,7 +27,32 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+//CREATE -> makes a new issue for a project
+//POST/issue/project/:projectId
+router.post('/issue/project/:projectId', requireToken,(req,res,next) => {
+    // assigns projectId & ownerId to issue
+    req.body.issue.project = req.params.projectId
+    req.body.issue.owner = req.user.id
+    //creates new issue
+    Issue.create(req.body.issue)
+    .then((issue)=> {
+        //pushes owner into team arr
+        issue.team.push(req.user)
+        return issue.save()
+    })
+    // respond with status 201 and JSON of new issue
+    .then((issue)=> {
+        res.status(201).json({issue})
+    })
+    .catch(next)
+})
 
+
+
+// initial test to see if routes are connected to port 8000 - successful
+// router.get('/issue',(req,res,next)=> {
+//     res.send('this works!!!!')
+// })
 
 
 module.exports = router
