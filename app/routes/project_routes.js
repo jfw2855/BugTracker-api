@@ -65,6 +65,26 @@ router.get('/project/:projectId', requireToken, (req, res, next) => {
   })
 
 
+// UPDATE -> updates project
+// PATCH/project/:projectId
+router.patch('/project/:projectId', requireToken, removeBlanks, (req, res, next) => {
+  const projectId = req.params.projectId
+  Project.findById(projectId)
+      //if no project is found
+      .then(handle404)
+      //Project found
+      .then(project => {
+          // checks if user is owner
+          requireOwnership(req, project)
+          // updates and saves project
+          project.set(req.body.project)
+          return project.save()
+      })
+      // send 204 no content
+      .then(() => res.sendStatus(204))
+      .catch(next)
+})
+
 // initial test to see if routes are connected to port 8000 - successful
 // router.get('/project',(req,res,next)=> {
 //     res.send('this works!!!!')
