@@ -23,7 +23,12 @@ const issueSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Project',
             required: true,
-        }
+        },
+		owner: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		}
 	},
 	{
 		timestamps: true,
