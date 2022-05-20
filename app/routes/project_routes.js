@@ -45,14 +45,21 @@ router.post('/project', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
-// SHOW
-// GET/project
-router.get('/project', requireToken, (req, res, next) => {
-    Project.find({ owner: req.user.id })
+// SHOW -> displays project
+// GET/project/:projectId
+router.get('/project/:projectId', requireToken, (req, res, next) => {
+    const projectId = req.params.projectId
+    Project.findById(projectId)
       //if no project is found
       .then(handle404)
       // respond with status 200 and JSON of the project
-      .then((project) => res.status(200).json({ project: project }))
+      .then((project) => {
+        //returns status 200 if user is in project's organization, else sends status 401
+          project.organization === req.user.organization? 
+          res.status(200).json({ project: project }):
+          res.status(401).json({msg:`User does not belong to Project's organization`})
+          }
+        )
       // if an error occurs, pass it to the handler
       .catch(next)
   })
