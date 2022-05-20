@@ -30,10 +30,10 @@ const router = express.Router()
 // CREATE
 // POST/project
 router.post('/project', requireToken, (req, res, next) => {
-	// set owner of new project to be current user
-    console.log('hello?')
+	// set owner and organization to new project
 	req.body.project.owner = req.user.id
-    console.log('this is project',req.body.project)
+    req.body.project.organization = req.user.organization
+
 	Project.create(req.body.project)
 		// respond to succesful `create` with status 201 and JSON of new "project"
 		.then((project) => {
@@ -45,6 +45,17 @@ router.post('/project', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
+// SHOW
+// GET/project
+router.get('/project', requireToken, (req, res, next) => {
+    Project.find({ owner: req.user.id })
+      //if no project is found
+      .then(handle404)
+      // respond with status 200 and JSON of the project
+      .then((project) => res.status(200).json({ project: project }))
+      // if an error occurs, pass it to the handler
+      .catch(next)
+  })
 
 
 // initial test to see if routes are connected to port 8000 - successful
