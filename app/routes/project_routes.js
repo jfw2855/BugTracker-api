@@ -45,7 +45,7 @@ router.post('/project', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
-// SHOW -> displays project
+// SHOW -> displays single project
 // GET/project/:projectId
 router.get('/project/:projectId', requireToken, (req, res, next) => {
     const projectId = req.params.projectId
@@ -63,6 +63,23 @@ router.get('/project/:projectId', requireToken, (req, res, next) => {
       // if an error occurs, pass it to the handler
       .catch(next)
   })
+
+// SHOW -> displays ALL projects
+// GET/project
+router.get('/project', requireToken, (req, res, next) => {
+  const org = req.user.organization
+  //finds all projects associated with user's organization
+  Project.find({organization:org})
+    //if no project is found
+    .then(handle404)
+    // respond with status 200 and JSON of the projects
+    .then((projects) => {
+        res.status(200).json({ projects: projects })
+        }
+      )
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
 
 
 // UPDATE -> updates project
