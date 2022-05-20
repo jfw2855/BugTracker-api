@@ -27,7 +27,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// CREATE
+// CREATE -> creates new project
 // POST/project
 router.post('/project', requireToken, (req, res, next) => {
 	// set owner and organization to new project
@@ -82,7 +82,27 @@ router.patch('/project/:projectId', requireToken, removeBlanks, (req, res, next)
       })
       // send 204 no content
       .then(() => res.sendStatus(204))
+      //if any errors occurs, pass to error handler
       .catch(next)
+})
+
+//DELETE -> removes project
+//DELETE/project
+router.delete('/project/:projectId', requireToken, (req,res,next)=>{
+  const projectId = req.params.projectId
+  Project.findById(projectId)
+    //if no project is found
+    .then(handle404)
+    //project found
+    .then(project =>{
+      //checks if user is the project owner
+      requireOwnership(req,project)
+      project.delete()
+    })
+    .then(()=> res.sendStatus(204))
+    //if any errors occurs, pass to error handler
+    .catch(next)
+  
 })
 
 // initial test to see if routes are connected to port 8000 - successful
