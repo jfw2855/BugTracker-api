@@ -3,8 +3,8 @@ const express = require('express')
 // Passport docs: http://www.passportjs.org/docs/
 const passport = require('passport')
 
-// pull in Mongoose model for examples
-const Example = require('../models/example')
+// pull in Mongoose model for project
+const Project = require('../models/project')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -26,6 +26,32 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
+
+// CREATE
+// POST/project
+router.post('/project', requireToken, (req, res, next) => {
+	// set owner of new project to be current user
+    console.log('hello?')
+	req.body.project.owner = req.user.id
+    console.log('this is project',req.body.project)
+	Project.create(req.body.project)
+		// respond to succesful `create` with status 201 and JSON of new "project"
+		.then((project) => {
+			res.status(201).json({ project: project.toObject() })
+		})
+		// if an error occurs, pass it off to our error handler
+		// the error handler needs the error message and the `res` object so that it
+		// can send an error message back to the client
+		.catch(next)
+})
+
+
+
+// initial test to see if routes are connected to port 8000 - successful
+// router.get('/project',(req,res,next)=> {
+//     res.send('this works!!!!')
+// })
+
 
 
 module.exports = router
