@@ -107,6 +107,26 @@ router.patch('/issue/:issueId', requireToken, removeBlanks, (req, res, next) => 
 })
 
 
+//DELETE -> removes single issue
+//DELETE/issue/:issueId
+router.delete('/issue/:issueId', requireToken, (req,res,next)=>{
+    const issueId = req.params.issueId
+    Issue.findById(issueId)
+      //if no issue is found
+      .then(handle404)
+      //issue found
+      .then(issue => {
+        //checks if user is the issue owner
+        requireOwnership(req,issue)
+        issue.delete()
+      })
+      //send 204 no content
+      .then(()=> res.sendStatus(204))
+      //if any errors occurs, pass to error handler
+      .catch(next)
+    
+})
+
 // initial test to see if routes are connected to port 8000 - successful
 // router.get('/issue',(req,res,next)=> {
 //     res.send('this works!!!!')
