@@ -7,6 +7,7 @@ const cors = require('cors')
 const projectRoutes = require('./app/routes/project_routes')
 const userRoutes = require('./app/routes/user_routes')
 const issueRoutes = require('./app/routes/issue_routes')
+const commentRoutes = require('./app/routes/comment_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -66,6 +67,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
+app.use(commentRoutes)
 app.use(projectRoutes)
 app.use(issueRoutes)
 app.use(userRoutes)
