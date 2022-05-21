@@ -63,7 +63,7 @@ router.get('/issue/:issueId', requireToken, (req, res, next) => {
         )
       // if an error occurs, pass it to the handler
       .catch(next)
-  })
+})
 
 // SHOW -> displays all project issues
 // GET/issue/project/:projectId
@@ -80,7 +80,31 @@ router.get('/issue/project/:projectId', requireToken, (req, res, next) => {
         )
       // if an error occurs, pass it to the handler
       .catch(next)
-  })
+})
+
+
+
+// UPDATE -> updates an issue
+// PATCH/issue/:issueId
+router.patch('/issue/:issueId', requireToken, removeBlanks, (req, res, next) => {
+    const issueId = req.params.issueId
+    //finds single issue
+    Issue.findById(issueId)
+      //if no issue is found
+      .then(handle404)
+      // issue found
+      .then((issue) => {
+          // checks if user is owner
+          requireOwnership(req,issue)
+          //updates and saves issue
+          issue.set(req.body.issue)
+          return issue.save()
+          })
+        //send 204 no content
+       .then(() => res.sendStatus(204))
+      // if an error occurs, pass it to the handler
+      .catch(next)
+})
 
 
 // initial test to see if routes are connected to port 8000 - successful
