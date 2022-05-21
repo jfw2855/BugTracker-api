@@ -27,10 +27,31 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-//initial test to see if routes are connected to port 8000 - successful
-router.get('/comment',(req,res,next)=> {
-    res.send('this works!!!!')
+//CREATE -> makes a comment for an issue
+//POST/comment/issue/:issueId
+router.post('/comment/issue/:issueId', requireToken,(req,res,next) => {
+    const issueId = req.params.issueId
+    // assigns owner to comment
+    req.body.comment.owner = req.user.id
+    //creates new comment
+    Issue.findById(issueId)
+    .then((issue)=> {
+        //pushes comment into comments field
+        issue.comments.push(req.body.comment)
+        return issue.save()
+    })
+    // respond with status 201 and JSON of issue w/ comment
+    .then((issue)=> {
+        res.status(201).json({issue})
+    })
+    .catch(next)
 })
+
+
+//initial test to see if routes are connected to port 8000 - successful
+// router.get('/comment',(req,res,next)=> {
+//     res.send('this works!!!!')
+// })
 
 
 module.exports = router
