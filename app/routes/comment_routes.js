@@ -71,6 +71,29 @@ router.patch('/comment/:issueId/:commentId', requireToken, removeBlanks, (req, r
       .catch(next)
 })
 
+// DELETE -> deletes a comment
+// DELETE/comment/:commentId
+router.delete('/comment/:issueId/:commentId', requireToken, removeBlanks, (req, res, next) => {
+    const commentId = req.params.commentId
+    const issueId = req.params.issueId
+    //finds issue
+    Issue.findById(issueId)
+      //if no issue is found
+      .then(handle404)
+      // issue found
+      .then((issue) => {
+          // gets comment by its id (subdoc)
+          const theComment = issue.comments.id(commentId)
+          requireOwnership(req,theComment)
+          theComment.remove()
+          return issue.save()
+          })
+        //send 204 no content
+       .then(() => res.sendStatus(204))
+      // if an error occurs, pass it to the handler
+      .catch(next)
+})
+
 
 //initial test to see if routes are connected to port 8000 - successful
 // router.get('/comment',(req,res,next)=> {
