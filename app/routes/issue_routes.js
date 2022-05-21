@@ -65,6 +65,23 @@ router.get('/issue/:issueId', requireToken, (req, res, next) => {
       .catch(next)
   })
 
+// SHOW -> displays all project issues
+// GET/issue/project/:projectId
+router.get('/issue/project/:projectId', requireToken, (req, res, next) => {
+    const projectId = req.params.projectId
+    //finds all issues for project 
+    Issue.find({project:projectId})
+      //if no issue is found
+      .then(handle404)
+      // respond with status 200 and JSON of the issue
+      .then((issues) => {
+          res.status(200).json({ issues })
+          }
+        )
+      // if an error occurs, pass it to the handler
+      .catch(next)
+  })
+
 
 // initial test to see if routes are connected to port 8000 - successful
 // router.get('/issue',(req,res,next)=> {
