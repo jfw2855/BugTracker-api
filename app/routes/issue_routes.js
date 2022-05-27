@@ -73,7 +73,7 @@ router.get('/issue/project/:projectId', requireToken, (req, res, next) => {
     Issue.find({project:projectId})
       //if no issue is found
       .then(handle404)
-      // respond with status 200 and JSON of the issue
+      // respond with status 200 and JSON of the issues
       .then((issues) => {
           res.status(200).json({ issues })
           }
@@ -82,6 +82,21 @@ router.get('/issue/project/:projectId', requireToken, (req, res, next) => {
       .catch(next)
 })
 
+// SHOW -> displays all user's issues
+// GET/issue/user
+router.get('/user/issues', requireToken, (req, res, next) => {
+  //finds all user's issues
+  Issue.find({owner:req.user.id})
+    //if no issue is found
+    .then(handle404)
+    // respond with status 200 and JSON of the issues
+    .then((issues) => {
+        res.status(200).json({ issues })
+        }
+      )
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
 
 
 // UPDATE -> updates an issue
