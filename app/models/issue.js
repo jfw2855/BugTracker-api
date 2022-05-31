@@ -17,6 +17,10 @@ const issueSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+		description: {
+			type: String,
+			required: true,
+		},
         team: Array,
         comments: [commentSchema],
         project: {
