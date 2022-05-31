@@ -33,6 +33,7 @@ router.post('/issue/project/:projectId', requireToken,(req,res,next) => {
     // assigns projectId & ownerId to issue
     req.body.issue.project = req.params.projectId
     req.body.issue.owner = req.user.id
+    req.body.issue.status = "open"
     //creates new issue
     Issue.create(req.body.issue)
     .then((issue)=> {
