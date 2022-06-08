@@ -140,7 +140,19 @@ router.delete('/issue/:issueId', requireToken, (req,res,next)=>{
       .then(()=> res.sendStatus(204))
       //if any errors occurs, pass to error handler
       .catch(next)
-    
+})
+
+//DELETE all issues -> removes ALL issues from a project
+//DELETE/issue/project/:projectId
+router.delete('/issue/project/:projectId', requireToken, (req,res,next)=>{
+  const projectId = req.params.projectId
+  Issue.deleteMany({project:projectId})
+    //if no issue is found
+    .then(handle404)
+    //send 204 no content
+    .then(()=> res.sendStatus(204))
+    //if any errors occurs, pass to error handler
+    .catch(next)
 })
 
 // initial test to see if routes are connected to port 8000 - successful
