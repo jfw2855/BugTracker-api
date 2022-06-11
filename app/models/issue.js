@@ -19,7 +19,7 @@ const issueSchema = new mongoose.Schema(
         },
 		description: {
 			type: String,
-			required: true,
+			required: false,
 		},
         team: Array,
         comments: [commentSchema],

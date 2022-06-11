@@ -29,7 +29,7 @@ const router = express.Router()
 
 //CREATE -> makes a comment for an issue
 //POST/comment/issue/:issueId
-router.post('/comment/issue/:issueId', requireToken,(req,res,next) => {
+router.post('/comment/issue/:issueId', requireToken, removeBlanks,(req,res,next) => {
     const issueId = req.params.issueId
     // assigns owner to comment
     req.body.comment.owner = req.user.id
