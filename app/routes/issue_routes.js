@@ -54,7 +54,7 @@ router.post('/issue/project/:projectId', requireToken,(req,res,next) => {
 router.get('/issue/:issueId', requireToken, (req, res, next) => {
     const issueId = req.params.issueId
     //finds issue 
-    Issue.findById(issueId).populate('owner').populate('project')
+    Issue.findById(issueId).populate('owner').populate('project').populate('comments.owner')
       //if no issue is found
       .then(handle404)
       // respond with status 200 and JSON of the issue
