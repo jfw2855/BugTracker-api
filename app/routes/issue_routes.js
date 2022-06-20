@@ -34,6 +34,7 @@ router.post('/issue/project/:projectId', requireToken,(req,res,next) => {
     req.body.issue.project = req.params.projectId
     req.body.issue.owner = req.user.id
     req.body.issue.status = "open"
+    req.body.issue.organization = req.user.organization
     //creates new issue
     Issue.create(req.body.issue)
     .then((issue)=> {
