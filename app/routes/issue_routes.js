@@ -100,6 +100,21 @@ router.get('/user/issues', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+// SHOW -> displays all org issues
+// GET/issues/org
+router.get('/issues/org', requireToken, (req, res, next) => {
+  //finds all issues from organization
+  Issue.find({organization:req.user.organization})
+    //if no issue is found
+    .then(handle404)
+    // respond with status 200 and JSON of the issues
+    .then((issues) => {
+        res.status(200).json({ issues })
+        }
+      )
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
 
 // UPDATE -> updates an issue
 // PATCH/issue/:issueId
