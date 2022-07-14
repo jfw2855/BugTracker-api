@@ -49,7 +49,7 @@ router.post('/project', requireToken, (req, res, next) => {
 // GET/project/:projectId
 router.get('/project/:projectId', requireToken, (req, res, next) => {
     const projectId = req.params.projectId
-    Project.findById(projectId)
+    Project.findById(projectId).populate('owner')
       //if no project is found
       .then(handle404)
       // respond with status 200 and JSON of the project
