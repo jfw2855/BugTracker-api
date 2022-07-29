@@ -147,4 +147,18 @@ router.delete('/sign-out', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
+// GET -> gets all org members
+// GET/users
+router.get('/users', requireToken, (req,res,next)=> {
+	let org = req.user.organization
+	//finds all org members & excludes certain data fields
+	User.find({organization:org},{ hashedPassword: 0, createdAt: 0, updatedAt: 0, __v:0, token: 0})
+	//respond with status 200 and JSON of the org members
+	.then((orgMembers)=> {
+		res.status(200).json({orgMembers})
+	})
+	//if an error occurs, pass it to the handler
+	.catch(next)
+})
+
 module.exports = router
