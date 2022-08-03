@@ -171,10 +171,19 @@ router.delete('/issue/project/:projectId', requireToken, (req,res,next)=>{
     .catch(next)
 })
 
-// initial test to see if routes are connected to port 8000 - successful
-// router.get('/issue',(req,res,next)=> {
-//     res.send('this works!!!!')
-// })
+//Delete team member -> removes issue team member
+//DELETE/issue/:issueId/:userId
+router.delete('/issue/:issueId/:userId', requireToken, (req,res,next) => {
+  const issueId = req.params.issueId
+  const userId = req.params.userId
+  Issue.findByIdAndUpdate(issueId, {
+    '$pull': {
+        'team':{ '_id': userId }
+    }
+  })
+  .then(()=>res.sendStatus(204))
+  .catch(next)
+})
 
 
 module.exports = router
