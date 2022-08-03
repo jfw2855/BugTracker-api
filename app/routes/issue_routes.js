@@ -181,7 +181,9 @@ router.delete('/issue/:issueId/:userId', requireToken, (req,res,next) => {
         'team':{ '_id': userId }
     }
   })
+  //send 204 no content
   .then(()=>res.sendStatus(204))
+  //if any errors occurs, pass to error handler
   .catch(next)
 })
 
