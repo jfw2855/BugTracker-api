@@ -116,6 +116,28 @@ router.get('/issues/org', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+// SHOW -> Returns average close issue time in Days
+// GET/issues/org/closed
+router.get('/issues/org/closed', requireToken, (req, res, next) => {
+  //finds all closed issues from organization
+  Issue.find({organization:req.user.organization, status:'closed'},{team:0,description:0,comments:0,title:0})
+    //if no issue is found
+    .then(handle404)
+    // respond with status 200 and JSON of the issues
+    .then((issues) => {
+        let avgCloseTime = 0
+        for (let i in issues) {
+          avgCloseTime+=(issues[i].updatedAt.getTime()-issues[i].createdAt.getTime())/86400000
+        }
+        avgCloseTime=avgCloseTime/issues.length
+
+        res.status(200).json({ avgCloseTime })
+        }
+      )
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
+
 // UPDATE -> updates an issue
 // PATCH/issue/:issueId
 router.patch('/issue/:issueId', requireToken, removeBlanks, (req, res, next) => {
