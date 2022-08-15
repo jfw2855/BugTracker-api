@@ -88,7 +88,7 @@ router.get('/issue/project/:projectId', requireToken, (req, res, next) => {
 // GET/issue/user
 router.get('/user/issues', requireToken, (req, res, next) => {
   //finds all user's issues
-  Issue.find({owner:req.user.id})
+  Issue.find({owner:req.user.id}).populate('project')
     //if no issue is found
     .then(handle404)
     // respond with status 200 and JSON of the issues
@@ -130,7 +130,6 @@ router.get('/issues/org/closed', requireToken, (req, res, next) => {
           avgCloseTime+=(issues[i].updatedAt.getTime()-issues[i].createdAt.getTime())/86400000
         }
         avgCloseTime=avgCloseTime/issues.length
-
         res.status(200).json({ avgCloseTime })
         }
       )
