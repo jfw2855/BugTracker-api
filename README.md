@@ -1,11 +1,61 @@
-## Bug Tracker App
+# BugTracker | MERN
 
-- Bug Tracker is a bug/issue tracking system for an organization.
+A project management tool that tracks project related issues<br/>
+[Client Source Code](https://github.com/jfw2855/BugTracker-Client)
 
-### Tech Stack
+## Tech Stack
 
-![MongoDB](https://img.shields.io/badge/-MongoDB-05122A?style=flat&logo=mongodb)&nbsp;![Express](https://img.shields.io/badge/-Express-05122A?style=flat&logo=express)&nbsp;![React](https://img.shields.io/badge/-React-05122A?style=flat&logo=react)&nbsp;![Node.js](https://img.shields.io/badge/-Node.js-05122A?style=flat&logo=node.js)&nbsp;![Bootstrap](https://img.shields.io/badge/-Bootstrap-05122A?style=flat&logo=bootstrap&logoColor=563D7C)
+#### Frontend
+- React (Hooks, State, Functional Components)
+- PlotlyJS
+- React-icons
+- Axios
+- React Bootstrap
+
+#### Backend
+
+- NodeJS
+- Express
+- JWT
+- Bcrypt
+- MongoDB
+- Mongoose
+
+## Features
+
+- Authentication (login/register w/ username & password)
+- CRUD projects, able to create issues within the project
+- CRUD bugs, with title, description, status, priority, and issue team members
+- Organization members can comment on issues
+- dashboard to render organizational issues and project stats
+- Loading spinners for fetching processes
+
+## App Screenshots
+![SignIn](/media/SignIn_BugTracker.png)
+
+![SignUp](/media/SignUp_BugTracker.png)
+
+![Dashboard](/media/Dashboard-HomePage_BugTracker.png)
+
+![CreateProjectModal](/media/CreateProjectModal_BugTracker.png)
+
+![OpenIssueModal](/media/NewIssueModal_BugTracker.png)
+
+![ProjectShowPage](/media/ProjectShowPage_BugTracker.png)
+
+![UpdateModal](/media/UpdateProjectModal_BugTracker.png)
+
+![DeleteModal](/media/DeleteModal_BugTracker.png)
+
+![IssueShowPage](/media/IssueShowPage_BugTracker.png)
 
 
 
+## Planning & Design 
+<details>
+<summary>Overview</summary>
 
+## Wireframes
+![bugTracker](/media/bug-tracker%20wf1.png)
+![bugTracker](/media/bug-tracker%20wf2.png)
+</details>
